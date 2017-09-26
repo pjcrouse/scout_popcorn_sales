@@ -31,22 +31,24 @@ def create_figure(total_sales):
     if select.value == 'Pack':
         p.y_range = Range1d(0, max(14000, int(total_sales*1.2)))
         goal = Span(location=12500, dimension='width', line_color='red', line_dash='solid', line_width=3)
-        span_label = Label(x=150, y=12500, x_units='screen', y_units='data', text='Goal=$12.5K')
+        span_label = Label(x=0.3, y=12500, x_units='data', y_units='data', text='Goal=$12.5K')
         p.add_layout(goal)
         p.add_layout(span_label)
 
+    p.sizing_mode='scale_width'
     return p
 
 #create updated func:
 def update(attr, old, new):
     layout.children[1] = create_figure(total_sales)
+    layout.children[1].sizing_mode='scale_width'
 
 select_options=[('Pack', 'Pack'), ('Den', 'Den'), ('Rank', 'Scout Rank')]
 select=Select(title="Aggregate By:", value='Pack', options=select_options)
 select.on_change('value', update)
 
 controls = widgetbox([select], width=200)
-layout = column(controls, create_figure(total_sales))
+layout = column(controls, create_figure(total_sales), sizing_mode='scale_width')
 
 curdoc().add_root(layout)
 curdoc().title = "Popcorn Sales"
