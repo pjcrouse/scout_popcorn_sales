@@ -18,6 +18,7 @@ def index():
     left_to_sell = '{:,.2f}'.format((goal-total)/days_left/len(df)*7)
     left_to_sell_num = float(left_to_sell)
     records = df[df['Sales']>0]
+    scouts_with_sales = len(records)
     n=min(len(records), 10)
     if n == 0:
         table_title = "No Sales Data Yet:"
@@ -37,7 +38,7 @@ def index():
     return render_template('index.html', bokeh_script=bokeh_script, days_left=days_left,
                             table_title=table_title, n=n, records=records[:n], scout_names=names,
                             goal=goal, total_str=total_str, left_to_sell=left_to_sell,
-                            left_to_sell_num=left_to_sell_num)
+                            left_to_sell_num=left_to_sell_num, scouts_with_sales=scouts_with_sales)
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
