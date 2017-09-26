@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Pack 12 Popcorn Sales</title>
+  <link rel="stylesheet" type="text/css" href={{ url_for( 'static', filename='style.css' ) }} />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="jumbotron" img style="background:url(./static/popcorn.jpg) no-repeat center center fixed; border:0px; border-radius:0px; background-size:cover; opacity:0.8">
+    <h1 class="display-3">Popcorn Leaderboard:</h1>
+    <h4><span style="background-color:lightgrey"><strong><em>Note: Sales end 10/22. Only {{ days_left }} days left, let's get selling!</em></strong></span></h4>
+    <!-- <hr class="my-4"> -->
+    <p>
+      <a class="btn btn-primary btn-lg" role="button" , href="https://www.trails-end.com/">More About Trail's End</a>
+    </p>
+  </div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-2" style="padding-left:25px">
+      <form method="post" , action="/">
+        <div class="form-group">
+          <fieldset class="fieldset">
+            <h3>Instructions:</h3> 1) Select Scout:<br>
+            <select class="form-control" name="scout">
+    <option disabled selected option value>--Select a Scout--</option>
+    {% for name in scout_names %}
+    <option value="{{ name }}">{{ name }}</option>
+    {% endfor %}
+  </select><br> 2) Input Total Sales:<br>
+            <input class="form-control" type="number" min="0" name="sales" /><br>
+            <input type="submit" class="btn btn-info" value="Submit">
+          </fieldset>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-sm-5">
+
+      <h3 style="margin-bottom:0px">{{ table_title }}</h3>
+      <table class="table table-sm table-hover">
+        <caption><em>* Up to top 10 non-zero records are shown</em></caption>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Scout</th>
+            <th>Rank</th>
+            <th>Den</th>
+            <th>Sales</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for index, record in records.iterrows() %}
+          <tr>
+            <th>{{ index + 1 }}</th>
+            <td>{{ record.Name }}</td>
+            <td>{{ record.Rank }}</td>
+            <td>{{ record.Den }}</td>
+            <td>{{ "${:,.0f}".format(record.Sales) }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-sm-3">
+      <h3 style="margin-bottom:0px">Sales Graph:</h3> <div style="margin-top:0px">{{ bokeh_script|safe }}</div>
+    </div>
+  </div>
+</div>
+
+  {% if left_to_sell_num > 0 %}
+  <p style="padding-left:25px">Total raised so far is ${{ total_str }} against a pack goal of {{ "${:,.0f}".format(goal) }}. To meet pack goal, each scout has to sell <em><strong>${{ left_to_sell }}</strong></em> per week between now and 10/22!</p>
+  {% else %}
+  <p style="padding-left:25px">GOAL MET! Total raised so far is ${{ total_str }} against a pack goal of {{ "${:,.0f}".format(goal) }}. {% endif %}
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+</body>
+
+</html>
