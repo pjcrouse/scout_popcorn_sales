@@ -11,6 +11,24 @@
 
 <body>
   <div class="jumbotron-fluid" img style="background:url(./static/popcorn.jpg) no-repeat center center fixed; border:0px; border-radius:0px; background-size:cover; opacity:0.8">
+
+    <div class="float-sm-right">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="background-color:lightgrey">Additional Information:
+          <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="{{ url_for('static', filename='Scout_Guide.pdf') }}">Scout Guide</a></li>
+            <li><a href="{{ url_for('static', filename='Scout_Sales_Script_and_Selling_Tips_Cards.pdf') }}">Scout Sales Script</a></li>
+            <li><a href="{{ url_for('static', filename='Scout_Sale_Planning_Worksheet.pdf') }}">Scout Planning Sheet</a></li>
+            <li><a href="{{ url_for('static', filename='Online_Selling_Information_Handout.pdf') }}">Online Selling Info</a></li>
+            <!-- <li><a href="{{ url_for('static', filename='6_Simple_Steps_to_Selling_with_Luke_Video_CORRECT_FILE.mov') }}">6 Steps to Selling Video</a></li> -->
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+
     <h1 class="display-4">Popcorn Leaderboard:</h1>
     <h5><span style="background-color:lightgrey"><strong><em>Note: Sales end 10/22. Only <u>{{ days_left }}</u> days left, let's get selling!</em></strong></span></h4>
     <!-- <hr class="my-4"> -->
