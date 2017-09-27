@@ -5,6 +5,18 @@ import datetime
 import pandas as pd
 from werkzeug.contrib.fixers import ProxyFix
 
+def determine_chunky(x):
+    if pd.notnull(x['Family Members']):
+        if (x['Family Members'] == 2.0) & (x['Family Sum'] >= 525.0):
+            return True
+        elif (x['Family Members'] == 3.0) & (x['Family Sum'] >= 700.0):
+            return True
+    else:
+        if x['Sales'] >= 350.0:
+            return True
+        else:
+            return False
+
 app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
@@ -50,18 +62,6 @@ def get_top_sellers():
     names = sorted(list(set(df['Name'].tolist())))
     df = df.sort_values(by='Sales', axis=0, ascending=False).reset_index(drop=True)
     return df, names
-
-def determine_chunky(x):
-    if pd.notnull(x['Family Members']):
-        if (x['Family Members'] == 2.0) & (x['Family Sum'] >= 525.0):
-            return True
-        elif (x['Family Members'] == 3.0) & (x['Family Sum'] >= 700.0):
-            return True
-    else:
-        if x['Sales'] >= 350.0:
-            return True
-        else:
-            return False
 
 if __name__ == "__main__":
     app.run()
