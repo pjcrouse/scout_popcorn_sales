@@ -5,6 +5,7 @@ from bokeh.io import curdoc
 from bokeh.models import ColumnDataSource, NumeralTickFormatter, Span, Label, Range1d, HoverTool
 from bokeh.models.widgets import Select
 from bokeh.layouts import layout, widgetbox, row, column
+from math import radians
 
 df = pd.read_csv('data.csv')
 #df['Sales'] = np.random.randint(0,400,len(df))
@@ -34,6 +35,9 @@ def create_figure(total_sales):
         span_label = Label(x=0.3, y=12500, x_units='data', y_units='data', text='Goal=$12.5K')
         p.add_layout(goal)
         p.add_layout(span_label)
+
+    else:
+        p.xaxis.major_label_orientation = radians(60)
 
     p.sizing_mode='scale_width'
     return p
