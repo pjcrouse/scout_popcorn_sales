@@ -13,13 +13,16 @@ def index():
     goal=12500
     days_left = (datetime.date(2017, 10, 22)-datetime.date.today()).days
     df, names = get_top_sellers()
+    df['Family Sum'] = df['Sales'].groupby(df['Family']).transform('sum')
+    df['Family Members'] = df['Sales'].groupby(df['Family']).transform('count')
+    df['Chunky'] = df.apply(determine_chunky, axis=1)
     total = df['Sales'].sum()
     total_str = '{:,.0f}'.format(total)
     left_to_sell = '{:,.2f}'.format((goal-total)/days_left/len(df)*7)
     left_to_sell_num = float(left_to_sell)
     records = df[df['Sales']>0]
     scouts_with_sales = len(records)
-    n=min(len(records), 10)
+    n=min(len(records), n)
     if n == 0:
         table_title = "No Sales Data Yet:"
     elif n == 1:
@@ -47,6 +50,18 @@ def get_top_sellers():
     names = sorted(list(set(df['Name'].tolist())))
     df = df.sort_values(by='Sales', axis=0, ascending=False).reset_index(drop=True)
     return df, names
+
+def determine_chunky(x):
+    if pd.notnull(x['Family Members']):
+        if (x['Family Members'] == 2.0) & (x['Family Sum'] >= 525.0):
+            return True
+        elif (x['Family Members'] == 3.0) & (x['Family Sum'] >= 700.0):
+            return True
+    else:
+        if x['Sales'] >= 350.0:
+            return True
+        else:
+            return False
 
 if __name__ == "__main__":
     app.run()
