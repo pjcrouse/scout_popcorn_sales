@@ -66,20 +66,18 @@
             <th>Rank</th>
             <th>Den</th>
             <th>Sales</th>
+            <th style="display:none;">Chunky</th>
           </tr>
         </thead>
         <tbody>
           {% for index, record in records.iterrows() %}
-          {% if record.Chunky %}
-          <tr class="table-success">
-          {% else %}
-          <tr>
-          {% endif %}
+          <tr class={{ "table-success" if record['Chunky'] == 1 }}>
             <th>{{ index + 1 }}</th>
             <td>{{ record.Name }}</td>
             <td>{{ record.Rank }}</td>
             <td>{{ record.Den }}</td>
             <td>{{ "${:,.0f}".format(record.Sales) }}</td>
+            <td style="display:none;" >{{ record.Chunky }}</td>
           </tr>
           {% endfor %}
         </tbody>
