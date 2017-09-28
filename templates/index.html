@@ -70,7 +70,7 @@
         </thead>
         <tbody>
           {% for index, record in records.iterrows() %}
-          <tr class={{ "table-success" if record.Chunky }}>
+          <tr class={{ "table-success" if record.Chunky == 1 }}>
             <th>{{ index + 1 }}</th>
             <td>{{ record.Name }}</td>
             <td>{{ record.Rank }}</td>
