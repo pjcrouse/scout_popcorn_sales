@@ -13,6 +13,7 @@ def index():
     goal=12500
     days_left = (datetime.date(2017, 10, 22)-datetime.date.today()).days
     df, names = get_top_sellers()
+    df['Family'].fillna(df['Name'], inplace=True)
     df['Family Sum'] = df['Sales'].groupby(df['Family']).transform('sum')
     df['Family Members'] = df['Sales'].groupby(df['Family']).transform('count')
     df['Chunky'] = df.apply(determine_chunky, axis=1)
@@ -47,22 +48,21 @@ def index():
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
 def get_top_sellers():
-    df = pd.read_csv('/opt/webapps/bokehflask/data.csv')
+    df = pd.read_csv('/opt/webapps/bokehflask/data.csv', na_values='None')
     names = sorted(list(set(df['Name'].tolist())))
     df = df.sort_values(by='Sales', axis=0, ascending=False).reset_index(drop=True)
     return df, names
 
 def determine_chunky(x):
-    if pd.notnull(x['Family Members']):
+    if x['Sales'] >= 350:
+        return 1
+    if x['Family'] != x['Name']:
         if (x['Family Members'] == 2.0) & (x['Family Sum'] >= 525.0):
             return 1
         elif (x['Family Members'] == 3.0) & (x['Family Sum'] >= 700.0):
             return 1
     else:
-        if x['Sales'] >= 350.0:
-            return 1
-        else:
-            return 0
+        return 0
 
 if __name__ == "__main__":
     app.run()

@@ -58,7 +58,7 @@
 
       <h3 style="margin-bottom:0px">{{ table_title }}</h3>
       <table class="table table-sm table-hover">
-        <caption><em>* Up to top {{ n }} non-zero records are shown.</em></caption>
+        <caption><em>* Up to top {{ n }} non-zero records are shown. Green = Earned Chunky's Party</em></caption>
         <thead>
           <tr>
             <th>#</th>
@@ -66,7 +66,6 @@
             <th>Rank</th>
             <th>Den</th>
             <th>Sales</th>
-            <th style="display:none;">Chunky</th>
           </tr>
         </thead>
         <tbody>
@@ -77,7 +76,6 @@
             <td>{{ record.Rank }}</td>
             <td>{{ record.Den }}</td>
             <td>{{ "${:,.0f}".format(record.Sales) }}</td>
-            <td style="display:none;" >{{ record.Chunky }}</td>
           </tr>
           {% endfor %}
         </tbody>
