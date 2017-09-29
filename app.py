@@ -16,6 +16,8 @@ def index():
     df['Family'].fillna(df['Name'], inplace=True)
     df['Family Sum'] = df['Sales'].groupby(df['Family']).transform('sum')
     df['Family Members'] = df['Sales'].groupby(df['Family']).transform('count')
+    df['Family Max'] = df['Sales'].groupby(df['Family']).transform('max')
+    df['Family Rank'] = df.groupby("Family")["Sales"].rank(method='dense', ascending=False)
     df['Chunky'] = df.apply(determine_chunky, axis=1)
     total = df['Sales'].sum()
     total_str = '{:,.0f}'.format(total)
@@ -54,12 +56,16 @@ def get_top_sellers():
     return df, names
 
 def determine_chunky(x):
-    if x['Sales'] >= 350:
+    if x['Sales'] >= 350.0:
         return 1
-    if x['Family'] != x['Name']:
-        if (x['Family Members'] == 2.0) & (x['Family Sum'] >= 525.0):
+    if (x['Family Members'] == 2.0) & (x['Family Sum'] >= 525.0):
+        return 1
+    if x['Family Members'] == 3.0:
+        if x['Family Sum'] >= 700.0:
             return 1
-        elif (x['Family Members'] == 3.0) & (x['Family Sum'] >= 700.0):
+        elif (x['Family Rank'] == 1) & (x['Family Sum'] >= 350):
+            return 1
+        elif (x['Family Rank'] == 2) & (x['Sales'] + x['Family Max'] >= 525.0):
             return 1
     else:
         return 0
